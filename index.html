@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Listen multi-platform issues</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      /* Slideshow styles */
+      @font-face {
+        font-family: 'Bitstream Vera Sans';
+        src: url(../fonts/veramono.ttf);
+      }
+
+      h1 {
+        font-size: 200%;
+      }
+      p, li, body {
+        font-size: 150%;
+      }
+      pre {
+        font-size: 115%;
+      }
+
+      .remark-slide-content {
+        font-family: 'Bitstream Vera Sans', monospace;
+        background-color: #232323;
+        color: #A5C261;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      ul, pre {
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+![Guard Icon image](images/guard.png)
+
+# Listen multi-platform issues
+
+---
+
+# thibaud.gg
+
+---
+
+# Listen gem
+
+---
+
+# Extracted from Guard
+
+---
+
+# 3,500,000+ downloads
+
+???
+https://rubygems.org/gems/listen
+
+---
+
+# Listen to file modifications
+
+---
+
+# Should work everywhere!
+
+---
+
+# The issue
+
+---
+
+# Use OS specific gems
+
+- rb-fsevent (OS X)
+- rb-inotify (Linux)
+- rb-kqueue (BSD)
+- wdm (Win)
+- polling fallback :(
+
+---
+
+# Gemspec
+
+``` ruby
+Gem::Specification.new do |s|
+  s.name = 'listen'
+  # ...
+  s.add_dependency 'celluloid'
+  s.add_dependency 'rb-fsevent' # if os == 'darwin'
+  s.add_dependency 'rb-inotify' # if os == 'linux'
+  # ...
+end
+```
+
+???
+Interpreted on package time... too bad
+http://stackoverflow.com/questions/4596606/rubygems-how-do-i-add-platform-specific-dependency
+
+---
+
+# Gemfile
+
+``` ruby
+gem 'listen'
+gem 'rb-fsevent' # if os == 'darwin'
+gem 'rb-inotify' # if os == 'linux'
+```
+
+???
+Interpreted before generating the Gemfile.lock... too bad
+http://bundler.io/v1.5/man/gemfile.5.html
+
+---
+
+# Gemfile.lock
+# :'(
+
+???
+https://github.com/bundler/bundler-features/issues/4
+
+---
+
+# Our "solution"
+
+???
+https://github.com/guard/listen#listen-adapters
+
+---
+
+# Travis CI
+
+???
+https://github.com/travis-ci/travis-ci/issues/216
+
+---
+
+# Thanks!
+
+
+    </textarea>
+    <script src="http://gnab.github.io/remark/downloads/remark-0.6.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
